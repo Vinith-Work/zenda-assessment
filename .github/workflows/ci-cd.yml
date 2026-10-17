@@ -42,3 +42,17 @@ jobs:
 
       - name: Load image
         run: gunzip -c image.tar.gz | docker load
+      
+      - name: Azure Login
+        uses: Azure/login@v3.0.2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Tag and push to ACR
+        run: |
+          IMAGE=${{ vars.ACR_NAME }}.azurecr.io/fee-planner:${{ github.sha }}
+          docker tag fee-planner:${{ github.sha }} "$IMAGE"
+          az acr login --name ${{ vars.ACR_NAME }}
+          docker push "$IMAGE"
