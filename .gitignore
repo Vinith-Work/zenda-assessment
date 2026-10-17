@@ -1,0 +1,10 @@
+target/
+.idea/
+*.iml
+.vscode/
+*.log
+.env
+*.env
+*.pem
+*.key
+kubeconfig*

@@ -1,0 +1,26 @@
+server:
+  port: ${PORT:8080}
+  # Finish in-flight requests on SIGTERM instead of dropping them (rolling updates, node drains).
+  shutdown: graceful
+
+spring:
+  application:
+    name: fee-planner
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  mvc:
+    # Errors as RFC 9457 problem details (application/problem+json)
+    problemdetails:
+      enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-components: always
+      show-details: never
+      probes:
+        enabled: true
