@@ -27,3 +27,18 @@ jobs:
         with:
           name: build image
           path: image.tar.gz
+  
+  push:
+    name: Push to ACR
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Download image
+        uses: actions/download-artifact@v8.0.2
+        with:
+          name: image
+
+      - name: Load image
+        run: gunzip -c image.tar.gz | docker load
