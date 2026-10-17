@@ -53,6 +53,6 @@ jobs:
       - name: Tag and push to ACR
         run: |
           IMAGE=${{ vars.ACR_NAME }}.azurecr.io/fee-planner:${{ github.sha }}
-          docker tag fee-planner:${{ github.sha }} "$IMAGE"
+          docker tag fee-planner:test "$IMAGE"
           az acr login --name ${{ vars.ACR_NAME }}
           docker push "$IMAGE"
