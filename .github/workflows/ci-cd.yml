@@ -38,7 +38,7 @@ jobs:
       - name: Download image
         uses: actions/download-artifact@v8.0.2
         with:
-          name: image
+          name: build image
 
       - name: Load image
         run: gunzip -c image.tar.gz | docker load
