@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write
     steps:
       - name: Check out code
         uses: actions/checkout@v5
@@ -38,7 +37,7 @@ jobs:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      id-token: write
     steps:
       - name: Download image
         uses: actions/download-artifact@v8.0.2
