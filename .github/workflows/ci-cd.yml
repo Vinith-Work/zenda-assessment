@@ -35,6 +35,7 @@ jobs:
         with:
           name: build image
           path: image.tar.gz
+          retention-days: 1
   
   push:
     name: Push to ACR
