@@ -60,3 +60,38 @@ jobs:
           docker tag fee-planner:test "$IMAGE"
           az acr login --name ${{ vars.ACR_NAME }}
           docker push "$IMAGE"
+  
+  update-manifest:
+    name: Update image tag
+    needs: push
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Get app token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - name: Check out code
+        uses: actions/checkout@v5
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Set new image tag
+        working-directory: k8s
+        run: kustomize edit set image fee-planner=${{ vars.ACR_NAME }}.azurecr.io/fee-planner:${{ github.sha }}
+      
+      - name: Commit and push
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          SLUG: ${{ steps.app-token.outputs.app-slug }}
+        run: |
+          USER_ID=$(gh api "/users/${SLUG}%5Bbot%5D" --jq .id)
+          git config user.name "${SLUG}[bot]"
+          git config user.email "${USER_ID}+${SLUG}[bot]@users.noreply.github.com"
+          git commit -am "deploy: fee-planner ${{ github.sha }}"
+          git push
