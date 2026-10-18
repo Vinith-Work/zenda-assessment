@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fee-planner
+  labels:
+    app: fee-planner
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fee-planner
+  template:
+    metadata:
+      labels:
+        app: fee-planner
+    spec:
+      containers:
+        - name: fee-planner
+          image: fee-planner
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: JAVA_OPTS
+              value: "-XX:MaxRAMPercentage=60 -XX:+ExitOnOutOfMemoryError"
+          resources:
+            requests:
+              cpu: 200m
+              memory: 350Mi
+            limits:
+              memory: 350Mi
+          startupProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            periodSeconds: 5
+            failureThreshold: 24
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            periodSeconds: 5

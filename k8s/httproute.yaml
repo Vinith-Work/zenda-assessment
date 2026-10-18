@@ -1,0 +1,18 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: fee-planner
+spec:
+  parentRefs:
+    - name: web
+      sectionName: http
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: fee-planner
+          port: 80
+      timeouts:
+        request: 30s
