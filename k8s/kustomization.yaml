@@ -13,4 +13,4 @@ resources:
 images:
 - name: fee-planner
   newName: zendaacr.azurecr.io/fee-planner
-  newTag: c82202a600ac2b8bf1107111cf46d8853637fdea
+  newTag: bbb2fde93728990206207b24afd86e64101c1e04
