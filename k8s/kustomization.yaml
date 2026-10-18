@@ -4,13 +4,13 @@ kind: Kustomization
 namespace: assessment
 
 resources:
-  - namespace.yaml
-  - deployment.yaml
-  - service.yaml
-  - gateway.yaml
-  - httproute.yaml
+- namespace.yaml
+- deployment.yaml
+- service.yaml
+- gateway.yaml
+- httproute.yaml
 
 images:
-  - name: fee-planner
-    newName: zendaacr.azurecr.io/fee-planner
-    newTag: 1d399af542eb1c0689d64f10c59d3b3f86f765b2
+- name: fee-planner
+  newName: zendaacr.azurecr.io/fee-planner
+  newTag: c82202a600ac2b8bf1107111cf46d8853637fdea
