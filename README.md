@@ -4,8 +4,8 @@ A small Spring Boot API that splits a school fee into instalments, deployed to A
 
 The app is simple on purpose. The point of this repo is the pipeline around it: build, test, push to ACR, deploy to Kubernetes, and keep the cluster in sync with git. A merge to `main` ends up running in the cluster a few minutes later, with nobody deploying manually.
 
-**Live:** http://20.235.12.91/ 
-**Health:** http://20.235.12.91/api/health 
+- **Live:** http://20.235.12.91/ 
+- **Health:** http://20.235.12.91/api/health 
 
 (HTTP only for now. Phone browsers that force HTTPS won’t open it)
 
@@ -80,8 +80,8 @@ docker run --rm -p 8080:8080 fee-planner:local
 The Dockerfile is a two-stage build. The first stage uses Maven + JDK to compile and run the tests, so a failing test means no image. The second stage only has the JRE having a lightweight image with necessary application dependencies.
 
 Base images:
-Build : https://hub.docker.com/layers/library/maven/3.9-eclipse-temurin-17-alpine/images/sha256-22843d83a9b979ce3af3385545c3ebba9ad5e5b0d2714131f66c97fd2b0e6267 - Maven + JDK
-Runtime : https://hub.docker.com/layers/library/eclipse-temurin/17-jre-alpine-3.24/images/sha256-d1c3a4f3577405164ba294be32ee85ba16ec544959a85e8fdc5a10bb04f46fc1 - JRE
+- Build : https://hub.docker.com/layers/library/maven/3.9-eclipse-temurin-17-alpine/images/sha256-22843d83a9b979ce3af3385545c3ebba9ad5e5b0d2714131f66c97fd2b0e6267 - Maven + JDK
+- Runtime : https://hub.docker.com/layers/library/eclipse-temurin/17-jre-alpine-3.24/images/sha256-d1c3a4f3577405164ba294be32ee85ba16ec544959a85e8fdc5a10bb04f46fc1 - JRE
 
 
 
@@ -113,10 +113,10 @@ Everything is in `k8s/` and applied with Kustomize:
 
 ## Security
 
-Azure secrets are not kept anyplace. Azure only accepts tokens from this repository's main branch, and GitHub Actions receives a temporary token via OIDC. This registry is the only place the identity may push.
-Main is protected; no force pushes are needed, only PR and a passing build.
-The tag commit comes from a GitHub App that's allowed to bypass that rule. I used an App because deploy keys are disabled in the org, and its token only lasts an hour.
-The container runs as a non-root user, and `/api/health` returns statuses only.
+- Azure secrets are not kept anyplace. Azure only accepts tokens from this repository's main branch, and GitHub Actions receives a temporary token via OIDC. This registry is the only place the identity may push.
+- Main is protected; no force pushes are needed, only PR and a passing build.
+- The tag commit comes from a GitHub App that's allowed to bypass that rule. I used an App because deploy keys are disabled in the org, and its token only lasts an hour.
+- The container runs as a non-root user, and `/api/health` returns statuses only.
 
 
 
