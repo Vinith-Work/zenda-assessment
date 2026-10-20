@@ -1,4 +1,3 @@
-Readme 
 # Fee-Planner
 
 A small Spring Boot API that splits a school fee into instalments, deployed to AKS with GitHub Actions and Argo CD.
@@ -14,7 +13,7 @@ The app is simple on purpose. The point of this repo is the pipeline around it: 
 
 | Area | Tools |
 |---|---|
-| Application | Java 17, Spring Boot 3.3.5 , Maven |
+| Application | Java 17, Spring Boot 3.3.5, Maven |
 | CI/CD | GitHub Actions |
 | Container | Docker (multi-stage build) |
 | Registry | Azure Container Registry (ACR) |
@@ -80,9 +79,11 @@ docker run --rm -p 8080:8080 fee-planner:local
 
 The Dockerfile is a two-stage build. The first stage uses Maven + JDK to compile and run the tests, so a failing test means no image. The second stage only has the JRE having a lightweight image with necessary application dependencies.
 
-https://hub.docker.com/layers/library/eclipse-temurin/17-jre-alpine-3.24/images/sha256-d1c3a4f3577405164ba294be32ee85ba16ec544959a85e8fdc5a10bb04f46fc1 - JRE
+Base images:
+Build : https://hub.docker.com/layers/library/maven/3.9-eclipse-temurin-17-alpine/images/sha256-22843d83a9b979ce3af3385545c3ebba9ad5e5b0d2714131f66c97fd2b0e6267 - Maven + JDK
+Runtime : https://hub.docker.com/layers/library/eclipse-temurin/17-jre-alpine-3.24/images/sha256-d1c3a4f3577405164ba294be32ee85ba16ec544959a85e8fdc5a10bb04f46fc1 - JRE
 
-https://hub.docker.com/layers/library/maven/3.9-eclipse-temurin-17-alpine/images/sha256-22843d83a9b979ce3af3385545c3ebba9ad5e5b0d2714131f66c97fd2b0e6267 - Maven + JDK
+
 
 ## CI/CD
 
@@ -95,8 +96,6 @@ https://hub.docker.com/layers/library/maven/3.9-eclipse-temurin-17-alpine/images
 ## Kubernetes
 
 Everything is in `k8s/` and applied with Kustomize:
-
-Cluster: AKS, 2 x Standard_D2as_v5. ACR is attached to the cluster, so the nodes pull images with the cluster's managed identity and there's no pull secret
 
 **Files**
 
@@ -117,6 +116,7 @@ Cluster: AKS, 2 x Standard_D2as_v5. ACR is attached to the cluster, so the nodes
 Azure secrets are not kept anyplace. Azure only accepts tokens from this repository's main branch, and GitHub Actions receives a temporary token via OIDC. This registry is the only place the identity may push.
 Main is protected; no force pushes are needed, only PR and a passing build.
 The tag commit comes from a GitHub App that's allowed to bypass that rule. I used an App because deploy keys are disabled in the org, and its token only lasts an hour.
+The container runs as a non-root user, and `/api/health` returns statuses only.
 
 
 
