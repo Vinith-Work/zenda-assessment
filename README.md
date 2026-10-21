@@ -99,12 +99,12 @@ Everything is in `k8s/` and applied with Kustomize:
 
 **Files**
 
-`namespace.yaml` - `assessment` namespace 
-`deployment.yaml` -  2 replicas, probes, resource requests and limits
-`service.yaml` -  ClusterIP of the application.
-`gateway.yaml` -  Gateway API gateway using the AKS app routing add-on 
-`httproute.yaml` -  Routes all traffic from the gateway to the service 
-`kustomization.yaml` - Namespace, file list, and the image name + tag (updated by CI) 
+- `namespace.yaml` - `assessment` namespace 
+- `deployment.yaml` -  2 replicas, probes, resource requests and limits
+- `service.yaml` -  ClusterIP of the application.
+- `gateway.yaml` -  Gateway API gateway using the AKS app routing add-on 
+- `httproute.yaml` -  Routes all traffic from the gateway to the service 
+- `kustomization.yaml` - Namespace, file list, and the image name + tag (updated by CI) 
 
 
 ## GitOps with Argo CD
