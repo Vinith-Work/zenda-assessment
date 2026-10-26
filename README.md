@@ -4,11 +4,6 @@ A small Spring Boot API that splits a school fee into instalments, deployed to A
 
 The app is simple on purpose. The point of this repo is the pipeline around it: build, test, push to ACR, deploy to Kubernetes, and keep the cluster in sync with git. A merge to `main` ends up running in the cluster a few minutes later, with nobody deploying manually.
 
-- **Live:** http://20.235.12.91/ 
-- **Health:** http://20.235.12.91/api/health 
-
-(HTTP only for now. Phone browsers that force HTTPS won’t open it)
-
 ## Tech stack
 
 | Area | Tools |
